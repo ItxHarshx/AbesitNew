@@ -29,6 +29,8 @@ def main():
     app.add_handler(
     MessageHandler(filters.StatusUpdate.NEW_CHAT_MEMBERS, welcome)
     )
+    app.add_handler(CommandHandler("pin", pin))
+    app.add_handler(CommandHandler("unpin", unpin))
 
     print("Bot is running...")
 
