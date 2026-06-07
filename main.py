@@ -50,6 +50,44 @@ async def welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
         except:
             pass
 
+async def pin(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.effective_user
+    chat = update.effective_chat
+
+    member = await chat.get_member(user.id)
+
+    if member.status not in ["administrator", "creator"]:
+        return
+
+    if not update.message.reply_to_message:
+        msg = await update.message.reply_text(
+            "Reply to a message to pin it."
+        )
+
+        await asyncio.sleep(5)
+
+        try:
+            await msg.delete()
+        except:
+            pass
+
+        return
+
+    await update.message.reply_to_message.pin(
+        disable_notification=True
+    )
+
+    msg = await update.message.reply_text(
+        "📌 Message pinned."
+    )
+
+    await asyncio.sleep(5)
+
+    try:
+        await msg.delete()
+    except:
+        pass
+
 
 if __name__ == "__main__":
     main()
