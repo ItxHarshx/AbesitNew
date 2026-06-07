@@ -80,7 +80,7 @@ async def pin(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     msg = await update.message.reply_text(
-        "📌 Message pinned."
+        "Message pinned."
     )
 
     await asyncio.sleep(5)
@@ -102,7 +102,7 @@ async def unpin(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await chat.unpin_all_messages()
 
     msg = await update.message.reply_text(
-        "📌 Message unpinned."
+        "Message unpinned."
     )
 
     await asyncio.sleep(5)
