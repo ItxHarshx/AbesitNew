@@ -4,6 +4,7 @@ from telegram.ext import MessageHandler, filters
 import asyncio
 from telegram.ext import Application, CommandHandler, ContextTypes
 import os
+from info.py import SUDO_USERS, GROUP_ID
 
 load_dotenv()
 
