@@ -1,0 +1,5 @@
+SUDO_USERS = [
+    123456789,  # Your Telegram ID
+]
+
+GROUP_ID = -1001234567890
