@@ -5,6 +5,7 @@ import asyncio
 from telegram.ext import Application, CommandHandler, ContextTypes
 import os
 from info import SUDO_USERS, GROUP_ID
+import time
 
 load_dotenv()
 
@@ -35,6 +36,7 @@ def main():
     app.add_handler(CommandHandler("announce", announce))
     app.add_handler(CommandHandler("lockgroup", lockgroup))
     app.add_handler(CommandHandler("unlockgroup", unlockgroup))
+    app.add_handler(CommandHandler("ping", ping))
 
     app.add_handler(
     MessageHandler(
@@ -253,6 +255,23 @@ async def enforce_group_lock(update: Update, context: ContextTypes.DEFAULT_TYPE)
         except Exception as e:
             print(f"DELETE ERROR: {e}")
 
+
+            
+async def ping(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    start_time = time.perf_counter()
+
+    msg = await update.message.reply_text("🏓 Pinging...")
+
+    response_time = (time.perf_counter() - start_time) * 1000
+
+    latency = response_time
+    
+    await msg.edit_text(
+        f"🏓 Pong!\n\n"
+        f"⚡ Latency: {latency:.0f} ms\n"
+        f"⏱ Response Time: {response_time:.0f} ms\n\n"
+        f"🤖 Status: Online"
+    )
 
 
 if __name__ == "__main__":
