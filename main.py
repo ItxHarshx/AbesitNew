@@ -136,13 +136,9 @@ async def announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # DM only
     if update.effective_chat.type != "private":
-        await update.message.reply_text(
+        await update.effective_chat.send_message(
         "Announcements can only be made from my DM."
     )
-        return
-
-    # DM only
-    if update.effective_chat.type != "private":
         return
 
     # Message check
