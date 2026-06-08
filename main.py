@@ -174,6 +174,12 @@ async def announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def lockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global GROUP_LOCKED
 
+    if GROUP_LOCKED:
+    await update.message.reply_text(
+        "🔒 Group is already locked."
+    )
+    return
+
     user_id = update.effective_user.id
 
     if user_id not in SUDO_USERS:
@@ -197,6 +203,12 @@ async def lockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
 async def unlockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global GROUP_LOCKED
+
+    if not GROUP_LOCKED:
+    await update.message.reply_text(
+        "🔓 Group is already unlocked."
+    )
+    return
 
     user_id = update.effective_user.id
 
