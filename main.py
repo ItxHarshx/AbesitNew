@@ -119,11 +119,11 @@ async def announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Sudo check
     # Sudo check
-if user_id not in SUDO_USERS:
-    await update.message.reply_text(
+    if user_id not in SUDO_USERS:
+        await update.message.reply_text(
         "🚫 Only official admins are allowed to make announcements."
     )
-    return
+        return
 
     # DM only
     if update.effective_chat.type != "private":
