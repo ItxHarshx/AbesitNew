@@ -232,6 +232,7 @@ async def unlockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 async def enforce_group_lock(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print("LOCK HANDLER RUNNING")
     # Ignore messages without a sender
     if not update.effective_user:
         return
