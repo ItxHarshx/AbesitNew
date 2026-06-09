@@ -43,6 +43,7 @@ def main():
     app.add_handler(CommandHandler("kick", kick))
     app.add_handler(CommandHandler("ban", ban))
     app.add_handler(CommandHandler("unban", unban))
+    app.add_handler(CommandHandler("stats", stats))
     app.add_handler(
     MessageHandler(
         filters.ALL & ~filters.COMMAND,
@@ -621,6 +622,41 @@ async def unban(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             f"❌ Failed to unban user:\n{e}"
         )
-                
+
+async def stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat = update.effective_chat
+
+    if chat.type not in ("group", "supergroup"):
+        await update.message.reply_text(
+            "This command can only be used in a group."
+        )
+        return
+
+    member_count = await context.bot.get_chat_member_count(chat.id)
+
+    admins = await chat.get_administrators()
+
+    admin_count = len(admins)
+
+    bot_count = sum(
+        1 for member in admins
+        if member.user.is_bot
+    )
+
+    sudo_count = len(SUDO_USERS)
+
+    status = "The group is currently locked 🔒" if GROUP_LOCKED else "The group is currently Unlocked 🔓"
+
+    await update.message.reply_text(
+        f"📊 Group Statistics.\n\n"
+        f"•Total Members: {member_count}\n"
+        f"• Admins: {admin_count}\n"
+        f"• Bots: {bot_count}\n"
+        f"• Official Admins: {sudo_count}\n\n"
+        f"- Group Status: {status}"
+    )
+
+
+                    
 if __name__ == "__main__":
     main()
