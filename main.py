@@ -497,7 +497,19 @@ async def ban(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
     except Exception:
         pass
+        
+    try:
+         member = await chat.get_member(target.id)
+            
+         if member.status == "kicked":
+              await update.message.reply_html(
+                  f"❌ {target.mention_html()} is already banned."
+            )
+            return
+      except Exception:
+         pass
 
+    
     try:
         await context.bot.ban_chat_member(
             chat_id=chat.id,
