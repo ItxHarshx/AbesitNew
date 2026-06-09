@@ -416,19 +416,19 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         
         for sudo_id in SUDO_USERS:
-    try:
-        await context.bot.send_message(
-            chat_id=sudo_id,
-            text=log_text,
-            parse_mode="HTML"
-        )
-    except Exception:
-        pass
-
-except Exception as e:
-    await update.message.reply_text(
-        f"❌ Failed to kick user:\n{e}"
-    )
+            try:
+                await context.bot.send_message(
+                    chat_id=sudo_id,
+                    text=log_text,
+                    parse_mode="HTML"
+                )
+            except Exception:
+                pass
+                
+        except Exception as e:
+            await update.message.reply_text(
+                f"❌ Failed to kick user:\n{e}
+                )
                 
                 
 if __name__ == "__main__":
