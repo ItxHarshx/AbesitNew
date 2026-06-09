@@ -398,9 +398,14 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
             only_if_banned=True
         )
 
-        target_mention = target.mention_html()
-        admin_mention = admin.mention_html()
-
+        target_mention = (
+    f'<a href="tg://user?id={target.id}">'
+    f'{target.first_name}</a>'
+)
+        admin_mention = (
+    f'<a href="tg://user?id={admin.id}">'
+    f'{admin.first_name}</a>'
+)
         await update.message.reply_html(
             f"{target_mention} kicked by {admin_mention}.\n"
             f"📝 Reason: {reason}"
