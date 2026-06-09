@@ -41,6 +41,8 @@ def main():
     app.add_handler(CommandHandler("lockstatus", lockstatus))
     app.add_handler(CommandHandler("sudoers", sudoers))
     app.add_handler(CommandHandler("kick", kick))
+    app.add_handler(CommandHandler("ban", ban))
+    app.add_handler(CommandHandler("unban", unban))
     app.add_handler(
     MessageHandler(
         filters.ALL & ~filters.COMMAND,
@@ -433,7 +435,170 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             f"❌ Failed to kick user:\n{e}"
         )
-                
+
+async def ban(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat = update.effective_chat
+    admin = update.effective_user
+
+    if chat.type not in ("group", "supergroup"):
+        await update.message.reply_text(
+            "This command can only be used in the group."
+        )
+        return
+
+    admin_member = await chat.get_member(admin.id)
+
+    if (
+        admin_member.status != "creator"
+        and not getattr(admin_member, "can_restrict_members", False)
+    ):
+        await update.message.reply_text(
+            "❌ You are missing the required rights (Ban Users)."
+        )
+        return
+
+    target = None
+    reason = "No reason provided"
+
+    if update.message.reply_to_message:
+        target = update.message.reply_to_message.from_user
+
+        if context.args:
+            reason = " ".join(context.args)
+
+    elif context.args and context.args[0].isdigit():
+        try:
+            member = await chat.get_member(int(context.args[0]))
+            target = member.user
+        except Exception:
+            await update.message.reply_text(
+                "User not found in this group."
+            )
+            return
+
+        if len(context.args) > 1:
+            reason = " ".join(context.args[1:])
+
+    else:
+        await update.message.reply_text(
+            "Usage:\n"
+            "• Reply to a user: /ban reason\n"
+            "• /ban <user_id> reason"
+        )
+        return
+
+    try:
+        member = await chat.get_member(target.id)
+
+        if member.status in ("administrator", "creator"):
+            await update.message.reply_text(
+                "❌ I can't ban administrators."
+            )
+            return
+    except Exception:
+        pass
+
+    try:
+        await context.bot.ban_chat_member(
+            chat_id=chat.id,
+            user_id=target.id
+        )
+
+        await update.message.reply_html(
+            f"🔨 {target.mention_html()} banned by "
+            f"{admin.mention_html()}.\n"
+            f"📝 Reason: {reason}"
+        )
+
+        log_text = (
+            f"🚨 <u><b>BAN ACTION</b></u>\n\n"
+            f"<b>• User:</b> {target.mention_html()} (<code>{target.id}</code>)\n"
+            f"<b>• Banned By:</b> {admin.mention_html()}\n"
+            f"<b>• At:</b> <i>{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</i>\n"
+            f"<b>• Reason:</b> {reason}"
+        )
+
+        for sudo_id in SUDO_USERS:
+            try:
+                await context.bot.send_message(
+                    chat_id=sudo_id,
+                    text=log_text,
+                    parse_mode="HTML"
+                )
+            except Exception:
+                pass
+
+    except Exception as e:
+        await update.message.reply_text(
+            f"❌ Failed to ban user:\n{e}"
+        )
+
+async def unban(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat = update.effective_chat
+    admin = update.effective_user
+
+    if chat.type not in ("group", "supergroup"):
+        await update.message.reply_text(
+            "This command can only be used in the group."
+        )
+        return
+
+    admin_member = await chat.get_member(admin.id)
+
+    if (
+        admin_member.status != "creator"
+        and not getattr(admin_member, "can_restrict_members", False)
+    ):
+        await update.message.reply_text(
+            "❌ You are missing the required rights (Ban Users)."
+        )
+        return
+
+    if not context.args:
+        await update.message.reply_text(
+            "Usage:\n/unban <user_id>"
+        )
+        return
+
+    user_id = context.args[0]
+
+    if not user_id.isdigit():
+        await update.message.reply_text(
+            "User ID must be numeric."
+        )
+        return
+
+    try:
+        await context.bot.unban_chat_member(
+            chat_id=chat.id,
+            user_id=int(user_id)
+        )
+
+        await update.message.reply_text(
+            f"✅ User {user_id} has been unbanned."
+        )
+
+        log_text = (
+            f"🚨 <u><b>UNBAN ACTION</b></u>\n\n"
+            f"<b>• User ID:</b> <code>{user_id}</code>\n"
+            f"<b>• Unbanned By:</b> {admin.mention_html()}\n"
+            f"<b>• At:</b> <i>{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</i>"
+        )
+
+        for sudo_id in SUDO_USERS:
+            try:
+                await context.bot.send_message(
+                    chat_id=sudo_id,
+                    text=log_text,
+                    parse_mode="HTML"
+                )
+            except Exception:
+                pass
+
+    except Exception as e:
+        await update.message.reply_text(
+            f"❌ Failed to unban user:\n{e}"
+        )
                 
 if __name__ == "__main__":
     main()
