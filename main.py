@@ -597,7 +597,7 @@ async def unban(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
         await update.message.reply_html(
-    f'✅ <a href="tg://user?id={user_id}">User</a> has been unbanned.'
+    f'✅ <a href="tg://user?id={user_id}"></a> has been unbanned.'
 )
 
         log_text = (
