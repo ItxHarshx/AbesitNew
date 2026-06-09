@@ -40,7 +40,7 @@ def main():
     app.add_handler(CommandHandler("ping", ping))
     app.add_handler(CommandHandler("lockstatus", lockstatus))
     app.add_handler(CommandHandler("sudoers", sudoers))
-
+    app.add_handler(CommandHandler("kick", kick))
     app.add_handler(
     MessageHandler(
         filters.ALL & ~filters.COMMAND,
@@ -311,6 +311,106 @@ async def sudoers(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text += f"• <code>{user_id}</code>\n"
 
     await update.message.reply_html(text)
+
+
+
+# ---------- helper: check admin ----------
+async def is_admin(chat, user_id):
+    member = await chat.get_member(user_id)
+    return member.status in ["administrator", "creator"] and member.can_restrict_members
+
+
+# ---------- helper: resolve target ----------
+async def get_target_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    message = update.message
+    chat = update.effective_chat
+
+    # 1. Reply case
+    if message.reply_to_message:
+        return message.reply_to_message.from_user
+
+    # 2. Argument case
+    if context.args:
+        arg = context.args[0]
+
+        # Case A: numeric ID
+        if arg.isdigit():
+            try:
+                return await context.bot.get_chat(int(arg))
+            except:
+                return None
+
+        # Case B: username (@user or user)
+        if arg.startswith("@"):
+            arg = arg[1:]
+
+        try:
+            return await context.bot.get_chat(arg)
+        except:
+            return None
+
+    return None
+
+
+# ---------- kick command ----------
+async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat = update.effective_chat
+    user = update.effective_user
+
+    if chat.type not in ["group", "supergroup"]:
+        await update.message.reply_text("❌ Only works in groups.")
+        return
+
+    # admin check
+    if not await is_admin(chat, user.id):
+        await update.message.reply_text("❌ You don't have permission to kick users.")
+        return
+
+    target = await get_target_user(update, context)
+
+    if not target:
+        await update.message.reply_text(
+            "⚠️ Usage:\n"
+            "/kick (reply)\n"
+            "/kick user_id\n"
+            "/kick @username"
+        )
+        return
+
+    reason = " ".join(context.args[1:]) if len(context.args) > 1 else "No reason provided"
+    time_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    try:
+        # kick (ban + unban)
+        await chat.ban_member(target.id)
+        await chat.unban_member(target.id)
+
+        admin_name = user.first_name
+
+        await update.message.reply_text(
+            f"👢 {target.first_name} was kicked by {admin_name}\n"
+            f"📝 Reason: {reason}"
+        )
+
+        log_text = (
+            f"🚨 KICK ACTION\n\n"
+            f"👤 User: {target.first_name} ({target.id})\n"
+            f"👮 Admin: {admin_name} ({user.id})\n"
+            f"🏠 Group: {chat.title}\n"
+            f"🕒 Time: {time_now}\n"
+            f"📌 Reason: {reason}"
+        )
+
+        # send to sudoers
+        for sudo_id in SUDO_USERS:
+            try:
+                await context.bot.send_message(sudo_id, log_text)
+            except:
+                pass
+
+    except Exception as e:
+        await update.message.reply_text(f"❌ Error: {e}")
+
 
 
 
