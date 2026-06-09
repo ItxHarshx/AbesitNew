@@ -645,7 +645,7 @@ async def stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     sudo_count = len(SUDO_USERS)
 
-    status = "The group is currently locked 🔒" if GROUP_LOCKED else "The group is currently Unlocked 🔓"
+    status = "Locked 🔒" if GROUP_LOCKED else "Unlocked 🔓"
 
     await update.message.reply_text(
         f"📊 Group Statistics.\n\n"
