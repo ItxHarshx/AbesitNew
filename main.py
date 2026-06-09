@@ -385,7 +385,6 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
         pass
 
     try:
-        # Kick = temporary ban + unban
         await context.bot.ban_chat_member(
             chat_id=chat.id,
             user_id=target.id
@@ -398,23 +397,23 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user_id=target.id,
             only_if_banned=True
         )
-        
+
         target_mention = target.mention_html()
         admin_mention = admin.mention_html()
-        
+
         await update.message.reply_html(
             f"{target_mention} kicked by {admin_mention}.\n"
             f"📝 Reason: {reason}"
         )
-        
+
         log_text = (
             f"🚨 <u><b>KICK ACTION</b></u>\n\n"
-            f"<b>• User: {target_mention}</b> (<code>{target.id}</code>)\n"
-            f"<b>• Kicked By: {admin_mention}</b>\n"
+            f"<b>• User:</b> {target_mention} (<code>{target.id}</code>)\n"
+            f"<b>• Kicked By:</b> {admin_mention}\n"
             f"<b>• At:</b> <i>{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</i>\n"
             f"<b>• Reason:</b> {reason}"
         )
-        
+
         for sudo_id in SUDO_USERS:
             try:
                 await context.bot.send_message(
@@ -424,11 +423,11 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 )
             except Exception:
                 pass
-                
-        except Exception as e:
-          await update.message.reply_text(
+
+    except Exception as e:
+        await update.message.reply_text(
             f"❌ Failed to kick user:\n{e}"
-    )
+        )
                 
                 
 if __name__ == "__main__":
