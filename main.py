@@ -313,7 +313,7 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Group only
     if chat.type not in ("group", "supergroup"):
-        await update.message.reply_text("❌ This command can only be used in groups.")
+        await update.message.reply_text("This command can only be used in the group.")
         return
 
     # Admin check
@@ -348,7 +348,7 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 target = member.user
             except Exception:
                 await update.message.reply_text(
-                    "❌ User not found in this group."
+                    "User not found in this group."
                 )
                 return
 
@@ -398,22 +398,24 @@ async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user_id=target.id,
             only_if_banned=True
         )
-
+        
+        target_mention = target.mention_html()
+        admin_mention = admin.mention_html()
         admin_name = admin.first_name
         target_name = target.first_name
 
-        await update.message.reply_text(
-            f"👢 {target_name} kicked by {admin_name}\n"
+        
+        await update.message.reply_html(
+            f"{target_mention} kicked by {admin_mention}.\n"
             f"📝 Reason: {reason}"
         )
 
         log_text = (
             f"🚨 KICK ACTION\n\n"
-            f"👤 User: {target_name} ({target.id})\n"
-            f"👮 Admin: {admin_name} ({admin.id})\n"
-            f"🏠 Group: {chat.title}\n"
-            f"🕒 Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-            f"📌 Reason: {reason}"
+            f"- User: {target_mention} ({target.id})\n"
+            f"- Kicked By: {admin_mention}\n"
+            f"- At: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+            f"- Reason: {reason}"
         )
 
         for sudo_id in SUDO_USERS:
