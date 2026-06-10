@@ -6,12 +6,14 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 import os
 from info import SUDO_USERS, GROUP_ID
 import time
+import re
 from datetime import datetime
 
 load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
 GROUP_LOCKED = False
+ANTILINK_ENABLED = False
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mention = update.effective_user.mention_html(
@@ -44,6 +46,11 @@ def main():
     app.add_handler(CommandHandler("ban", ban))
     app.add_handler(CommandHandler("unban", unban))
     app.add_handler(CommandHandler("stats", stats))
+    app.add_handler(CommandHandler("antilink", antilink))
+
+    app.add_handler(
+    MessageHandler(filters.TEXT & ~filters.COMMAND, anti_link_filter)
+    )
     app.add_handler(
     MessageHandler(
         filters.ALL & ~filters.COMMAND,
@@ -656,7 +663,77 @@ async def stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"- Group Status: {status}"
     )
 
+async def antilink(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global ANTILINK_ENABLED
 
-                    
+    user_id = update.effective_user.id
+
+    if user_id not in SUDO_USERS:
+        await update.message.reply_text("You are not allowed to use this command. ")
+        return
+
+    if not context.args:
+        status = "ON 🔒" if ANTILINK_ENABLED else "OFF 🔓"
+        await update.message.reply_text(f"AntiLink Status: {status}")
+        return
+
+    arg = context.args[0].lower()
+
+    if arg == "on":
+        ANTILINK_ENABLED = True
+        await update.message.reply_text("🚫 AntiLink Enabled")
+    elif arg == "off":
+        ANTILINK_ENABLED = False
+        await update.message.reply_text("✅ AntiLink Disabled")
+    else:
+        await update.message.reply_text("Usage: /antilink on or off")
+
+
+async def anti_link_filter(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global ANTILINK_ENABLED
+
+    if not ANTILINK_ENABLED:
+        return
+
+    if update.effective_chat.type == "private":
+        return
+
+    if not update.message or not update.message.text:
+        return
+
+    user = update.effective_user
+    chat = update.effective_chat
+
+    # ignore admins
+    member = await chat.get_member(user.id)
+    if member.status in ("administrator", "creator"):
+        return
+
+    text = update.message.text.lower()
+
+    # ONLY INVITE LINKS
+    patterns = [
+        # Telegram invite links
+        r"t\.me/\+",
+        r"t\.me/joinchat",
+        r"tg://join\?invite",
+
+        # WhatsApp group invites
+        r"chat\.whatsapp\.com",
+
+        # Instagram invite/share links (not reels/posts)
+        r"instagram\.com/invites",
+        r"instagram\.com/direct/invite",
+    ]
+
+    for pattern in patterns:
+        if re.search(pattern, text):
+            try:
+                await update.message.delete()
+            except:
+                pass
+            break
+
+
 if __name__ == "__main__":
     main()
