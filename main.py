@@ -724,6 +724,7 @@ async def anti_link_filter(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Instagram invite/share links (not reels/posts)
         r"instagram\.com/invites",
         r"instagram\.com/direct/invite",
+        r"ig\.me/",
     ]
 
     for pattern in patterns:
