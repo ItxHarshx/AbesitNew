@@ -30,24 +30,24 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
         keyboard = [
-    [
-        InlineKeyboardButton(
-            "👨‍💻 Bot Dev",
-            url="https://t.me/YOUR_USERNAME"
-        ),
-        InlineKeyboardButton(
-            "👮 Sudoers",
-            callback_data="sudoers"
+            [
+                InlineKeyboardButton(
+                    "👨‍💻 Bot Dev",
+                    url="https://t.me/YOUR_USERNAME"
+                ),
+                InlineKeyboardButton(
+                    "👮 Sudoers",
+                    callback_data="sudoers"
+                )
+            ]
+        ]
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
+
+        await update.message.reply_html(
+            text,
+            reply_markup=reply_markup
         )
-    ]
-]
-
-reply_markup = InlineKeyboardMarkup(keyboard)
-
-await update.message.reply_html(
-    text,
-    reply_markup=reply_markup
-)
 
     else:
         text = (
@@ -72,6 +72,7 @@ await update.message.reply_html(
             reply_markup=reply_markup
         )
 
+
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -83,11 +84,13 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for user_id in SUDO_USERS:
             try:
                 user = await context.bot.get_chat(user_id)
+
                 sudo_text += (
                     f'• <a href="tg://user?id={user.id}">'
                     f'{user.first_name}</a>\n'
                 )
-            except:
+
+            except Exception:
                 pass
 
         keyboard = [
@@ -134,6 +137,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
 
+                    
 
 def main():
     app = Application.builder().token(TOKEN).build()
