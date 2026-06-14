@@ -1,4 +1,4 @@
-import re
+pimport re
 import time
 import os
 import asyncio
@@ -113,6 +113,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         bot = await context.bot.get_me()
 
         text = (
+            f'👋 Hey <b>{mention}</b>!\n\n'
             f'I am <a href="tg://user?id={bot.id}">'
             f'<b>{context.bot.first_name}</b></a>, your ABESIT assistant.\n\n'
             f'📌 Use /help to explore my features.'
@@ -121,11 +122,11 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         keyboard = [
             [
                 InlineKeyboardButton(
-                    "👨‍💻 Bot Dev",
-                    url="https://t.me/YOUR_USERNAME"
+                    "Bot Dev",
+                    url="https://t.me/BrandedPsycho"
                 ),
                 InlineKeyboardButton(
-                    "👮 Sudoers",
+                    "Official Admins",
                     callback_data="sudoers"
                 )
             ]
