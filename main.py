@@ -149,17 +149,18 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode="HTML",
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
-    
+        
     elif query.data == "about":
-    text = (
+        
+        text = (
         "<b>ℹ️ About ABESIT Assistant</b>\n\n"
         "Version: 1.0\n\n"
         "ABESIT Assistant is a community management bot "
         "designed for the ABESIT Batch group.\n\n"
         "Developed and maintained by @BrandedPsycho."
     )
-
-    keyboard = [
+        
+        keyboard = [
         [
             InlineKeyboardButton(
                 "⬅️ Back",
@@ -167,12 +168,15 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
         ]
     ]
-
-    await query.edit_message_text(
+        await query.edit_message_text(
         text,
         parse_mode="HTML",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
+
+
+    
+    
 
 
 
