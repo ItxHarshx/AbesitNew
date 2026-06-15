@@ -33,7 +33,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             [
                 InlineKeyboardButton(
                     "👨‍💻 Bot Dev",
-                    url="https://t.me/YOUR_USERNAME"
+                    url="https://t.me/BrandedPsycho"
                 ),
                 InlineKeyboardButton(
                     "👮 Sudoers",
@@ -136,6 +136,10 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 InlineKeyboardButton(
                     "Official Admins",
                     callback_data="sudoers"
+                ),
+                InlineKeyboardButton(
+                    "ℹ️ About",
+                    callback_data="about",
                 )
             ]
         ]
@@ -152,7 +156,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Version: 1.0\n\n"
         "ABESIT Assistant is a community management bot "
         "designed for the ABESIT Batch group.\n\n"
-        "Developed and maintained by Harsh Rajput."
+        "Developed and maintained by @BrandedPsycho."
     )
 
     keyboard = [
