@@ -31,15 +31,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         keyboard = [
             [
                 InlineKeyboardButton(
-                    "👨‍💻 Bot Dev",
+                    "Bot Dev",
                     url="https://t.me/BrandedPsycho"
                 ),
                 InlineKeyboardButton(
-                    "👮 Sudoers",
+                    "Official Admins",
                     callback_data="sudoers"
                 ),
                 InlineKeyboardButton(
-                    "ℹ️ About",
+                    "About",
                     callback_data="about"
                 )
             ]
@@ -122,7 +122,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'👋 Hey <b>{mention}</b>!\n\n'
             f'I am <a href="tg://user?id={bot.id}">'
             f'<b>{context.bot.first_name}</b></a>, your ABESIT assistant.\n\n'
-            f'📌 Use /help to explore my features.'
         )
         
         keyboard = [
