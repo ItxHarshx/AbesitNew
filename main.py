@@ -151,7 +151,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
     
     elif query.data == "about":
-        text = (
+    text = (
         "<b>ℹ️ About ABESIT Assistant</b>\n\n"
         "Version: 1.0\n\n"
         "ABESIT Assistant is a community management bot "
