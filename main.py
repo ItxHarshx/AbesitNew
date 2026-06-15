@@ -257,6 +257,91 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode="HTML",
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
+    
+    elif query.data == "help_admin":
+        text = (
+            "<b>🛡️ Admin Commands</b>\n\n"
+            "/announce - Post announcement\n"
+            "/pin - Pin a message\n"
+            "/unpin - Remove pinned messages\n"
+            "/lockgroup - Lock the group\n"
+            "/unlockgroup - Unlock the group"
+        )
+        
+        keyboard = [
+            [
+                InlineKeyboardButton(
+                    "👥 General",
+                    callback_data="help_general"
+                ),
+                InlineKeyboardButton(
+                    "🛡️ Admin",
+                    callback_data="help_admin"
+                ),
+                InlineKeyboardButton(
+                    "✨ Features",
+                    callback_data="help_features"
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    "❌ Close",
+                    callback_data="help_close"
+                )
+            ]
+        ]
+        
+        await query.edit_message_text(
+            text,
+            parse_mode="HTML",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+    
+    elif query.data == "help_features":
+        text = (
+            "<b>Features</b>\n\n"
+            "- Announcement System\n"
+            "- Group Lock System\n"
+            "- Pin Management\n"
+            "- Sudo Management\n"
+            "- Bot Monitoring\n"
+            "- Interactive Menus"
+        )
+        keyboard = [
+            [
+                InlineKeyboardButton(
+                    "👥 General",
+                    callback_data="help_general"
+                ),
+                InlineKeyboardButton(
+                    "🛡️ Admin",
+                    callback_data="help_admin"
+                ),
+                InlineKeyboardButton(
+                    "✨ Features",
+                    callback_data="help_features"
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    "❌ Close",
+                    callback_data="help_close"
+                )
+            ]
+        ]
+        
+        await query.edit_message_text(
+            text,
+            parse_mode="HTML",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+    
+    elif query.data == "help_close":
+        
+        try:
+            await query.message.delete()
+            except:
+                pass
 
 
     
