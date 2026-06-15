@@ -340,8 +340,8 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         try:
             await query.message.delete()
-            except:
-                pass
+        except:
+            pass
 
 
     
