@@ -26,7 +26,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = (
             f'👋 Hey <b>{mention}</b>!\n\n'
             f'I am <a href="tg://user?id={bot.id}"><b>{context.bot.first_name}</b></a>, your ABESIT assistant.\n\n'
-            f'📌 Use /help to explore my features.'
         )
 
         keyboard = [
@@ -57,13 +56,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = (
             f'👋 Hey <b>{mention}</b>!\n\n'
             f'I am <a href="tg://user?id={bot.id}"><b>{context.bot.first_name}</b></a>.\n\n'
-            f'📌 Use /help in my DM to explore my features.'
         )
 
         keyboard = [
             [
                 InlineKeyboardButton(
-                    "🤖 Open Bot",
+                    "Open Bot",
                     url=f"https://t.me/{bot.username}?start=start"
                 )
             ]
