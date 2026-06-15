@@ -29,6 +29,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
         keyboard = [
+             [
+                 InlineKeyboardButton(
+                     "Help & Commands",
+                     callback_data="help"
+                 )
+             ],
             [
                 InlineKeyboardButton(
                     "Bot Dev",
