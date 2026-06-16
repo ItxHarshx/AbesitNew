@@ -404,7 +404,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     callback_data="help_close"
                 )
             ]
-        ]
         
         await query.edit_message_text(
             text,
