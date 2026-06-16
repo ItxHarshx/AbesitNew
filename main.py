@@ -41,11 +41,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     url="https://t.me/BrandedPsycho"
                 ),
                 InlineKeyboardButton(
-                    "Official Admins",
+                    "Admins",
                     callback_data="sudoers"
                 ),
                 InlineKeyboardButton(
-                    "About",
+                    "ℹ️ About",
                     callback_data="about"
                 )
             ]
@@ -61,7 +61,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         text = (
             f'👋 Hey <b>{mention}</b>!\n\n'
-            f'I am <a href="tg://user?id={bot.id}"><b>{context.bot.first_name}, a community management bot designed for the group Abesit Batch 2026-27.</b></a>.\n\n'
+            f'I am <a href="tg://user?id={bot.id}"><b>{context.bot.first_name}</b></a>, a community management bot designed for the group Abesit Batch 2026-27.\n\n'
         )
 
         keyboard = [
@@ -143,7 +143,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     url="https://t.me/BrandedPsycho"
                 ),
                 InlineKeyboardButton(
-                    "Official Admins",
+                    "Admins",
                     callback_data="sudoers"
                 ),
                 InlineKeyboardButton(
@@ -196,15 +196,15 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         keyboard = [
             [
                 InlineKeyboardButton(
-                    "👥 General",
+                    "General",
                     callback_data="help_general"
                 ),
                 InlineKeyboardButton(
-                    "🛡️ Admin",
+                    "Admin",
                     callback_data="help_admin"
                 ),
                 InlineKeyboardButton(
-                    "✨ Features",
+                    "Features",
                     callback_data="help_features"
                 )
             ],
@@ -232,15 +232,15 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         keyboard = [
             [
                 InlineKeyboardButton(
-                    "👥 General",
+                    "General",
                     callback_data="help_general"
                 ),
                 InlineKeyboardButton(
-                    "🛡️ Admin",
+                    "Admin",
                     callback_data="help_admin"
                 ),
                 InlineKeyboardButton(
-                    "✨ Features",
+                    "Features",
                     callback_data="help_features"
                 )
             ],
@@ -271,15 +271,15 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         keyboard = [
             [
                 InlineKeyboardButton(
-                    "👥 General",
+                    "General",
                     callback_data="help_general"
                 ),
                 InlineKeyboardButton(
-                    "🛡️ Admin",
+                    "Admin",
                     callback_data="help_admin"
                 ),
                 InlineKeyboardButton(
-                    "✨ Features",
+                    "Features",
                     callback_data="help_features"
                 )
             ],
@@ -310,15 +310,15 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         keyboard = [
             [
                 InlineKeyboardButton(
-                    "👥 General",
+                    "General",
                     callback_data="help_general"
                 ),
                 InlineKeyboardButton(
-                    "🛡️ Admin",
+                    "Admin",
                     callback_data="help_admin"
                 ),
                 InlineKeyboardButton(
-                    "✨ Features",
+                    "Features",
                     callback_data="help_features"
                 )
             ],
