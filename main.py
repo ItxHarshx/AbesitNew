@@ -410,12 +410,12 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=InlineKeyboardMarkup(keyboard),
         disable_web_page_preview=True
     )
-  
-    elif query.data == "help_close":
-    try:
-        await query.message.delete()
-    except:
-        pass
+
+elif query.data == "help_close":
+try:
+    await query.message.delete()
+except:
+    pass
 
 
     
