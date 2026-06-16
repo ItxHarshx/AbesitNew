@@ -418,7 +418,23 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             pass
 
 
-    
+async def contacts(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+    text = (
+        "<b>📞 Important Contacts: College</b>\n\n"
+
+        "• <b>Contact</b>\n"
+        "+91 97110 60923\n\n"
+
+        "• <b>WhatsApp / Calling</b>\n"
+        "+91 97110 60929\n"
+        "+91 82875 16759\n\n"
+
+        "• <b>Email & Website</b>\n"
+        "Coming Soon"
+    )
+
+    await update.message.reply_html(text)    
     
 
 
@@ -429,6 +445,7 @@ def main():
     app = Application.builder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("contacts", contacts))
     app.add_handler(
     MessageHandler(filters.StatusUpdate.NEW_CHAT_MEMBERS, welcome)
     )
