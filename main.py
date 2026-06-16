@@ -1070,20 +1070,14 @@ async def stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     admin_count = len(admins)
 
-    bot_count = sum(
-        1 for member in admins
-        if member.user.is_bot
-    )
-
     sudo_count = len(SUDO_USERS)
 
     status = "Locked 🔒" if GROUP_LOCKED else "Unlocked 🔓"
 
     await update.message.reply_text(
         f"📊 Group Statistics.\n\n"
-        f"•Total Members: {member_count}\n"
-        f"• Admins: {admin_count}\n"
-        f"• Bots: {bot_count}\n"
+        f"• Total Members: {member_count}\n"
+        f"• Total Admins: {admin_count}\n"
         f"• Official Admins: {sudo_count}\n\n"
         f"- Group Status: {status}"
     )
