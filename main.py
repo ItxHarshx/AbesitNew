@@ -465,7 +465,7 @@ def main():
     app.add_handler(CommandHandler("unban", unban))
     app.add_handler(CommandHandler("stats", stats))
     app.add_handler(CommandHandler("antilink", antilink))
-    app.add_handler(CommandHandler("adminlist", antilink))
+    app.add_handler(CommandHandler("adminlist", adminlist))
 
 
     app.add_handler(
