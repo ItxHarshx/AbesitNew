@@ -1,5 +1,5 @@
 from telegram import Update
-from telegram.ext import ContextTypes, CommandHandler
+from telegram.ext import ContextTypes
 
 async def adminlist(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat = update.effective_chat
