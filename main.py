@@ -11,6 +11,7 @@ from telegram.ext import MessageHandler, filters, Application, CommandHandler, C
 from info import SUDO_USERS, GROUP_ID
 from adminlist import adminlist
 from antilink import antilink, anti_link_filter
+from admin import promote, demote
 
 load_dotenv()
 
@@ -466,6 +467,8 @@ def main():
     app.add_handler(CommandHandler("stats", stats))
     app.add_handler(CommandHandler("antilink", antilink))
     app.add_handler(CommandHandler("adminlist", adminlist))
+    app.add_handler(CommandHandler("promote", promote))
+    app.add_handler(CommandHandler("demote", demote))
 
 
     app.add_handler(
