@@ -501,11 +501,10 @@ def main():
         enforce_group_lock
     )
     )
-    app.add_handler(
-        MessageHandler(filters.StatusUpdate.LEFT_CHAT_MEMBER, goodbye)
-    )
-    app.add_handler(CallbackQueryHandler(button_handler))
-
+    
+    filters.StatusUpdate.LEFT_CHAT_MEMBER matches only "left/removed" service messages
+    app.add_handler(MessageHandler(filters.StatusUpdate.LEFT_CHAT_MEMBER, member_left))
+    
     print("Bot is running...")
 
     app.run_polling()
