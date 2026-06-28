@@ -442,7 +442,12 @@ async def contacts(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
 
 
+async def goodbye(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.message.left_chat_member
 
+    await update.message.reply_html(
+        f'👋 <a href="tg://user?id={user.id}">{user.first_name}</a> left the chat.'
+    )
                     
 
 def main():
@@ -481,6 +486,12 @@ def main():
     )
     )
     app.add_handler(CallbackQueryHandler(button_handler))
+    app.add_handler(
+    MessageHandler(
+        filters.StatusUpdate.LEFT_CHAT_MEMBER,
+        goodbye
+    )
+    )
 
     print("Bot is running...")
 
