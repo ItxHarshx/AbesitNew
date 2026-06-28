@@ -12,6 +12,8 @@ from info import SUDO_USERS, GROUP_ID
 from adminlist import adminlist
 from antilink import antilink, anti_link_filter
 from admin import promote, demote
+from telegram.ext import ChatMemberHandler
+
 
 load_dotenv()
 
@@ -483,9 +485,9 @@ def main():
     MessageHandler(filters.TEXT & ~filters.COMMAND, anti_link_filter)
     )
     app.add_handler(
-    MessageHandler(
-        filters.StatusUpdate.LEFT_CHAT_MEMBER,
-        goodbye
+    ChatMemberHandler(
+        goodbye,
+        ChatMemberHandler.CHAT_MEMBER
     )
     )
     app.add_handler(
