@@ -7,28 +7,27 @@ SUDO_USERS = [
 
 GROUP_ID = -1004205157170
 
-
 async def id(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
 
-    # If replying to someone
     if message.reply_to_message:
         user = message.reply_to_message.from_user
         await message.reply_text(
-            f"👤 User ID: {user.id}\n"
-            f"Name: {user.first_name}"
+            f"👤 <b>User ID:</b> <code>{user.id}</code>",
+            parse_mode="HTML"
         )
     else:
-        # Own ID
         user = update.effective_user
         await message.reply_text(
-            f"👤 Your ID: {user.id}"
+            f"👤 <b>Your ID:</b> <code>{user.id}</code>",
+            parse_mode="HTML"
         )
+
 
 async def chatid(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat = update.effective_chat
 
     await update.message.reply_text(
-        f"💬 Chat ID: {chat.id}\n"
-        f"Type: {chat.type}"
+        f"💬 <b>Chat ID:</b> <code>{chat.id}</code>",
+        parse_mode="HTML"
     )
