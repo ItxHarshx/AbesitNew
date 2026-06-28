@@ -443,11 +443,7 @@ async def contacts(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def goodbye(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = update.message.left_chat_member
-
-    await update.message.reply_html(
-        f'👋 <a href="tg://user?id={user.id}">{user.first_name}</a> left the chat.'
-    )
+    print(update)
                     
 
 def main():
