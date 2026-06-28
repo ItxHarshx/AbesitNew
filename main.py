@@ -13,6 +13,7 @@ from adminlist import adminlist
 from antilink import antilink, anti_link_filter
 from admin import promote, demote
 from telegram.ext import ChatMemberHandler
+from telegram.constants import ChatMemberStatus
 
 
 load_dotenv()
@@ -444,14 +445,24 @@ async def contacts(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
 
 async def goodbye(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.message is None:
-        return
+    chat_member = update.chat_member
 
-    if update.message.left_chat_member:
-        user = update.message.left_chat_member
+    old_status = chat_member.old_chat_member.status
+    new_status = chat_member.new_chat_member.status
 
-        await update.message.reply_html(
-            f"👋 {user.mention_html()} left the chat."
+    if (
+        old_status in (ChatMemberStatus.MEMBER,
+                       ChatMemberStatus.ADMINISTRATOR,
+                       ChatMemberStatus.OWNER)
+        and new_status in (ChatMemberStatus.LEFT,
+                           ChatMemberStatus.BANNED)
+    ):
+        user = chat_member.new_chat_member.user
+
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=f"👋 {user.mention_html()} left the chat.",
+            parse_mode="HTML"
         )
                     
 
