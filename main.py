@@ -13,6 +13,7 @@ from adminlist import adminlist
 from antilink import antilink, anti_link_filter
 from admin import promote, demote
 from goodbye import member_left
+from deletemsg import delete_message
 #from instagram import download_instagram 
 
 load_dotenv()
@@ -493,6 +494,7 @@ def main():
     #app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r"instagram\.com"), download_instagram))
     app.add_handler(CommandHandler("id", id))
     app.add_handler(CommandHandler("chatid", chatid))
+    app.add_handler(CommandHandler("del", delete_message))
     
     
 
