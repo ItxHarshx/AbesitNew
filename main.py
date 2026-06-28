@@ -441,9 +441,16 @@ async def contacts(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_html(text)    
     
 
-
 async def goodbye(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print(update)
+    if update.message is None:
+        return
+
+    if update.message.left_chat_member:
+        user = update.message.left_chat_member
+
+        await update.message.reply_html(
+            f"👋 {user.mention_html()} left the chat."
+        )
                     
 
 def main():
