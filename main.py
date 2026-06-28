@@ -13,6 +13,7 @@ from adminlist import adminlist
 from antilink import antilink, anti_link_filter
 from admin import promote, demote
 from goodbye import member_left
+from downloader import downloader
 
 
 load_dotenv()
@@ -490,6 +491,12 @@ def main():
     app.add_handler(CommandHandler("promote", promote))
     app.add_handler(CommandHandler("demote", demote))
     app.add_handler(MessageHandler(filters.StatusUpdate.LEFT_CHAT_MEMBER, member_left))
+    app.add_handler(
+    MessageHandler(
+        filters.TEXT & ~filters.COMMAND,
+        downloader
+    )
+    )
     
 
 
