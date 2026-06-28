@@ -4,6 +4,10 @@ from telegram import Update, InputFile
 from telegram.ext import ContextTypes
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 API_URL = "https://instagram-reels-downloader-api.p.rapidapi.com/download"
 RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY")
 
