@@ -1,49 +1,123 @@
-import aiohttp
+import time
+import httpx
+from telegram import Update, InputFile
+from telegram.ext import ContextTypes
 
-RAPID_API_KEY = "bcd1210fc7mshd7e3a940974a9b1p1338c1jsn2d121f0a43e1"
-
-HEADERS = {
-    "X-RapidAPI-Key": RAPID_API_KEY,
-    "X-RapidAPI-Host": "instagram120.p.rapidapi.com",
-    "Content-Type": "application/json",
-}
-
-API_URL = "https://instagram120.p.rapidapi.com/api/instagram/posts"
+API_URL = "https://vkrdownloader.xyz/server/"
+API_KEY = "vkrdownloader"
 
 
-async def get_instagram_video(instagram_url: str):
-    payload = {
-        "id": instagram_url
+async def fetch_insta_media(link: str) -> dict | None:
+    params = {
+        "api_key": API_KEY,
+        "vkr": link,
     }
 
-    async with aiohttp.ClientSession() as session:
-        async with session.post(
-            API_URL,
-            headers=HEADERS,
-            json=payload
-        ) as response:
+    try:
+        async with httpx.AsyncClient(timeout=30) as client:
+            response = await client.get(API_URL, params=params)
 
-            if response.status != 200:
+            if response.status_code != 200:
                 return None
 
-            data = await response.json()
+            data = response.json()
 
-            try:
-                edges = data["result"]["edges"]
-
-                for item in edges:
-                    if not isinstance(item, dict):
-                        continue
-
-                    node = item.get("node")
-                    if not node:
-                        continue
-
-                    videos = node.get("video_versions")
-                    if videos:
-                        return videos[0]["url"]
-
+            if not data.get("data") or not data["data"].get("downloads"):
                 return None
 
-            except Exception:
-                return None
+            return data
+
+    except Exception:
+        return None
+
+
+async def download_with_progress(url: str, progress_msg, label: str) -> bytes | None:
+    try:
+        async with httpx.AsyncClient(timeout=120) as client:
+            async with client.stream("GET", url) as response:
+                if response.status_code != 200:
+                    return None
+
+                total = int(response.headers.get("content-length", 0))
+                if total == 0:
+                    return None
+
+                data = bytearray()
+                downloaded = 0
+                start = time.time()
+                last_update = 0
+
+                async for chunk in response.aiter_bytes(64 * 1024):
+                    data.extend(chunk)
+                    downloaded += len(chunk)
+
+                    now = time.time()
+
+                    if now - last_update >= 2:
+                        last_update = now
+
+                        percent = int(downloaded * 100 / total)
+                        elapsed = now - start
+                        eta = (total - downloaded) * elapsed / downloaded if downloaded else 0
+
+                        try:
+                            await progress_msg.edit_text(
+                                f"{label} {percent}% | ETA: {int(eta)}s"
+                            )
+                        except Exception:
+                            pass
+
+                return bytes(data)
+
+    except Exception:
+        return None
+
+
+async def download_instagram(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not update.message or not update.message.text:
+        return
+
+    link = update.message.text.strip()
+
+    if "instagram.com" not in link:
+        return
+
+    status = await update.message.reply_text("⏳ Fetching media...")
+
+    data = await fetch_insta_media(link)
+
+    if not data:
+        await status.edit_text("❌ Could not retrieve media.")
+        return
+
+    downloads = data["data"]["downloads"]
+
+    video_url = None
+
+    for item in downloads:
+        url = item.get("url")
+        ext = (item.get("ext") or "").lower()
+
+        if url and ext in ("mp4", "webm"):
+            video_url = url
+            break
+
+    if not video_url:
+        await status.edit_text("❌ No video found.")
+        return
+
+    await status.edit_text("📥 Downloading...")
+
+    media = await download_with_progress(video_url, status, "📥")
+
+    if not media:
+        await status.edit_text("❌ Download failed.")
+        return
+
+    await status.edit_text("📤 Uploading...")
+
+    await update.message.reply_video(
+        video=InputFile(media, filename=f"instagram_{update.message.message_id}.mp4")
+    )
+
+    await status.delete()
