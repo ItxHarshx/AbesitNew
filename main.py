@@ -484,17 +484,17 @@ def main():
     )
     app.add_handler(
     MessageHandler(
+        filters.StatusUpdate.LEFT_CHAT_MEMBER,
+        goodbye
+    )
+    )
+    app.add_handler(
+    MessageHandler(
         filters.ALL & ~filters.COMMAND,
         enforce_group_lock
     )
     )
     app.add_handler(CallbackQueryHandler(button_handler))
-    app.add_handler(
-    MessageHandler(
-        filters.StatusUpdate.LEFT_CHAT_MEMBER,
-        goodbye
-    )
-    )
 
     print("Bot is running...")
 
