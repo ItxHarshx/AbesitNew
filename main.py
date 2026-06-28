@@ -12,8 +12,7 @@ from info import SUDO_USERS, GROUP_ID
 from adminlist import adminlist
 from antilink import antilink, anti_link_filter
 from admin import promote, demote
-from telegram.ext import ChatMemberHandler
-from telegram.constants import ChatMemberStatus
+from goodbye import goodbye
 
 
 load_dotenv()
@@ -495,17 +494,15 @@ def main():
     app.add_handler(
     MessageHandler(filters.TEXT & ~filters.COMMAND, anti_link_filter)
     )
-    app.add_handler(
-    ChatMemberHandler(
-        goodbye,
-        ChatMemberHandler.CHAT_MEMBER
-    )
-    )
+
     app.add_handler(
     MessageHandler(
         filters.ALL & ~filters.COMMAND,
         enforce_group_lock
     )
+    )
+    app.add_handler(
+        MessageHandler(filters.StatusUpdate.LEFT_CHAT_MEMBER, goodbye)
     )
     app.add_handler(CallbackQueryHandler(button_handler))
 
