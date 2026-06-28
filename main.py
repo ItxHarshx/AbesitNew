@@ -12,7 +12,7 @@ from info import SUDO_USERS, GROUP_ID
 from adminlist import adminlist
 from antilink import antilink, anti_link_filter
 from admin import promote, demote
-from goodbye import goodbye
+from goodbye import member_left
 
 
 load_dotenv()
