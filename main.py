@@ -502,7 +502,7 @@ def main():
     )
     )
     
-    filters.StatusUpdate.LEFT_CHAT_MEMBER matches only "left/removed" service messages
+    #filters.StatusUpdate.LEFT_CHAT_MEMBER matches only "left/removed" service messages
     app.add_handler(MessageHandler(filters.StatusUpdate.LEFT_CHAT_MEMBER, member_left))
     
     print("Bot is running...")
