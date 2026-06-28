@@ -13,7 +13,7 @@ async def id(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if message.reply_to_message:
         user = message.reply_to_message.from_user
         await message.reply_text(
-            f"👤 <b>User ID:</b> <code>{user.id}</code>",
+            f"👤 <b>This User's ID:</b> <code>{user.id}</code>",
             parse_mode="HTML"
         )
     else:
