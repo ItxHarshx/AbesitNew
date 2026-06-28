@@ -14,7 +14,7 @@ from antilink import antilink, anti_link_filter
 from admin import promote, demote
 from goodbye import member_left
 #from downloader import downloader
-from instagram import get_instagram_video
+from instagram import download_Instagram 
 
 load_dotenv()
 
