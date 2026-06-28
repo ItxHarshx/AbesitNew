@@ -2,27 +2,43 @@ import time
 import httpx
 from telegram import Update, InputFile
 from telegram.ext import ContextTypes
+import os
 
-API_URL = "https://vkrdownloader.xyz/server/"
-API_KEY = "vkrdownloader"
+API_URL = "https://instagram-reels-downloader-api.p.rapidapi.com/download"
+RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY")
 
 
-async def fetch_insta_media(link: str) -> dict | None:
+async def fetch_insta_media(link: str):
+    headers = {
+        "x-rapidapi-key": RAPIDAPI_KEY,
+        "x-rapidapi-host": "instagram-reels-downloader-api.p.rapidapi.com",
+        "Content-Type": "application/json",
+    }
+
     params = {
-        "api_key": API_KEY,
-        "vkr": link,
+        "url": link,
     }
 
     try:
         async with httpx.AsyncClient(timeout=30) as client:
-            response = await client.get(API_URL, params=params)
+            response = await client.get(
+                API_URL,
+                headers=headers,
+                params=params,
+            )
 
             if response.status_code != 200:
                 return None
 
             data = response.json()
 
-            if not data.get("data") or not data["data"].get("downloads"):
+            if not data.get("success"):
+                return None
+
+            if not data.get("data"):
+                return None
+
+            if not data["data"].get("medias"):
                 return None
 
             return data
@@ -90,18 +106,15 @@ async def download_instagram(update: Update, context: ContextTypes.DEFAULT_TYPE)
         await status.edit_text("❌ Could not retrieve media.")
         return
 
-    downloads = data["data"]["downloads"]
-
+    medias = data["data"]["medias"]
+    
     video_url = None
-
-    for item in downloads:
-        url = item.get("url")
-        ext = (item.get("ext") or "").lower()
-
-        if url and ext in ("mp4", "webm"):
-            video_url = url
+    
+    for media in medias:
+        if media.get("type") == "video":
+            video_url = media.get("url")
             break
-
+            
     if not video_url:
         await status.edit_text("❌ No video found.")
         return
