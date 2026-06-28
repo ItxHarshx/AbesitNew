@@ -1,6 +1,6 @@
 import aiohttp
 
-RAPID_API_KEY = "YOUR_RAPIDAPI_KEY"
+RAPID_API_KEY = "bcd1210fc7mshd7e3a940974a9b1p1338c1jsn2d121f0a43e1"
 
 HEADERS = {
     "X-RapidAPI-Key": RAPID_API_KEY,
