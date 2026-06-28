@@ -2,7 +2,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 SUDO_USERS = [
-    6418418064, 8478458752, 7384482927 # Your Telegram ID 8478458752
+    6418418064, 8478458752, 7384482927, 8246547881 # Your Telegram ID 8478458752
 ]
 
 GROUP_ID = -1004205157170
