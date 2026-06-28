@@ -14,6 +14,7 @@ from antilink import antilink, anti_link_filter
 from admin import promote, demote
 from goodbye import member_left
 from deletemsg import delete_message
+from purge import purge
 #from instagram import download_instagram 
 
 load_dotenv()
@@ -495,7 +496,7 @@ def main():
     app.add_handler(CommandHandler("id", id))
     app.add_handler(CommandHandler("chatid", chatid))
     app.add_handler(CommandHandler("del", delete_message))
-    
+    app.add_handler(CommandHandler("purge", purge))
     
 
     app.add_handler(
