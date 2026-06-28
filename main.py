@@ -480,7 +480,7 @@ def main():
     app.add_handler(CommandHandler("unlockgroup", unlockgroup))
     app.add_handler(CommandHandler("ping", ping))
     app.add_handler(CommandHandler("lockstatus", lockstatus))
-    app.add_handler(CommandHandler("sudoers", sudoers))
+    app.add_handler(CommandHandler("admins", sudoers))
     app.add_handler(CommandHandler("kick", kick))
     app.add_handler(CommandHandler("ban", ban))
     app.add_handler(CommandHandler("unban", unban))
