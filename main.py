@@ -489,6 +489,8 @@ def main():
     app.add_handler(CommandHandler("adminlist", adminlist))
     app.add_handler(CommandHandler("promote", promote))
     app.add_handler(CommandHandler("demote", demote))
+    app.add_handler(MessageHandler(filters.StatusUpdate.LEFT_CHAT_MEMBER, member_left))
+    
 
 
     app.add_handler(
@@ -501,9 +503,6 @@ def main():
         enforce_group_lock
     )
     )
-    
-    #filters.StatusUpdate.LEFT_CHAT_MEMBER matches only "left/removed" service messages
-    app.add_handler(MessageHandler(filters.StatusUpdate.LEFT_CHAT_MEMBER, member_left))
     
     print("Bot is running...")
 
