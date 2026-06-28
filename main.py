@@ -8,7 +8,7 @@ from telegram import Update
 from telegram.ext import CallbackQueryHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import MessageHandler, filters, Application, CommandHandler, ContextTypes
-from info import SUDO_USERS, GROUP_ID
+from info import SUDO_USERS, GROUP_ID, id, chatid
 from adminlist import adminlist
 from antilink import antilink, anti_link_filter
 from admin import promote, demote
@@ -491,6 +491,8 @@ def main():
     app.add_handler(CommandHandler("demote", demote))
     app.add_handler(MessageHandler(filters.StatusUpdate.LEFT_CHAT_MEMBER, member_left))
     #app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r"instagram\.com"), download_instagram))
+    app.add_handler(CommandHandler("id", id))
+    app.add_handler(CommandHandler("chatid", chatid))
     
     
 
