@@ -13,7 +13,7 @@ from adminlist import adminlist
 from antilink import antilink, anti_link_filter
 from admin import promote, demote
 from goodbye import member_left
-from downloader import downloader
+#from downloader import downloader
 from instagram import get_instagram_video
 
 load_dotenv()
@@ -492,17 +492,18 @@ def main():
     app.add_handler(CommandHandler("demote", demote))
     app.add_handler(MessageHandler(filters.StatusUpdate.LEFT_CHAT_MEMBER, member_left))
     app.add_handler(
-    MessageHandler(
+    '''MessageHandler(
         filters.TEXT & ~filters.COMMAND,
         downloader
     )
-    )
-    app.add_handler(
+    )'''
+    app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r"instagram\.com"), download_instagram))
+    '''app.add_handler(
     MessageHandler(
         filters.TEXT & ~filters.COMMAND,
         instagram_handler
     )
-    )
+    )'''
     
 
 
