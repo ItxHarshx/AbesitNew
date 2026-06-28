@@ -14,7 +14,7 @@ from antilink import antilink, anti_link_filter
 from admin import promote, demote
 from goodbye import member_left
 from downloader import downloader
-
+from instagram import get_instagram_video
 
 load_dotenv()
 
@@ -495,6 +495,12 @@ def main():
     MessageHandler(
         filters.TEXT & ~filters.COMMAND,
         downloader
+    )
+    )
+    app.add_handler(
+    MessageHandler(
+        filters.TEXT & ~filters.COMMAND,
+        instagram_handler
     )
     )
     
@@ -1116,7 +1122,42 @@ async def stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"• Official Admins: {sudo_count}\n\n"
         f"- Group Status: {status}"
     )
-                     
+
+
+INSTAGRAM_REGEX = r"(https?://(?:www\.)?instagram\.com/reel/[^\s]+)"
+
+
+async def instagram_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not update.message or not update.message.text:
+        return
+
+    match = re.search(INSTAGRAM_REGEX, update.message.text)
+
+    if not match:
+        return
+
+    url = match.group(1)
+
+    msg = await update.message.reply_text("📥 Downloading Instagram Reel...")
+
+    try:
+        video = await get_instagram_video(url)
+
+        if not video:
+            await msg.edit_text("❌ Couldn't download this reel.")
+            return
+
+        await update.message.reply_video(
+            video=video,
+            caption="📥 Instagram Reel"
+        )
+
+        await msg.delete()
+
+    except Exception as e:
+        print(e)
+        await msg.edit_text("❌ Failed to download reel.")
+                 
         
 if __name__ == "__main__":
     main()
