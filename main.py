@@ -4,7 +4,7 @@ import os
 import asyncio
 from datetime import datetime
 from dotenv import load_dotenv
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, update
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import MessageHandler, filters, Application, CommandHandler, ChatMemberHandler, ContextTypes, CallbackQueryHandler
 from info import SUDO_USERS, GROUP_ID, id, chatid
 from adminlist import adminlist
