@@ -46,9 +46,9 @@ def _next_keyboard() -> InlineKeyboardMarkup:
     ]])
 
 
-def _skip_keyboard() -> InlineKeyboardMarkup:
+def _skip_keyboard(requested_mode: str) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup([[
-        InlineKeyboardButton("⏭ Skip Question", callback_data="wyr_skip")
+        InlineKeyboardButton("⏭ Skip Question", callback_data=f"wyr_skip:{requested_mode}")
     ]])
 
 
@@ -61,8 +61,8 @@ def _render_text(state: dict, result: dict | None = None) -> str:
     ]
 
     if result is None:
-        lines.append(f"[🔵] - {a}")
-        lines.append(f"[🔴] - {b}")
+        lines.append(f"🔵 {a}")
+        lines.append(f"🔴 {b}")
         lines.append("")
         if state["votes"]:
             if state["status"] == "counting":
@@ -70,7 +70,7 @@ def _render_text(state: dict, result: dict | None = None) -> str:
             else:
                 lines.append("<i>Waiting for players to answer...</i>")
             voted_names = ", ".join(html.escape(n) for n in state["names"].values())
-            lines.append(f"🗣️: {voted_names} already answered!")
+            lines.append(f"✅ {voted_names} already answered!")
         else:
             lines.append("<i>Waiting for players to answer...</i>")
     else:
@@ -166,7 +166,7 @@ async def _start_game(update: Update, context: ContextTypes.DEFAULT_TYPE, mode: 
     if existing and existing["status"] in ("voting", "counting"):
         await update.message.reply_text(
             "⚠️ There's already a question running in this group!",
-            reply_markup=_skip_keyboard()
+            reply_markup=_skip_keyboard(mode)
         )
         return
 
@@ -184,22 +184,22 @@ async def cmd_nsfw(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def cmd_wyr_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # The only WYR command allowed to work in DM too.
     mode_lines = "\n".join(
-        f"• /{cfg['command']} — {cfg['label']} mode"
+        f"• /{cfg['command']} — {cfg['label']} questions"
         for cfg in WYR_MODES.values()
     )
     text = (
-        "<b>[🍂] Would You Rather...?, mini game</b>\n\n"
+        "<b>🤔 Would You Rather</b>\n\n"
         "A quick group voting game. Someone starts a question, members vote, "
         f"and once at least {MIN_VOTES_FOR_TIMER} people have voted a "
         f"{REVEAL_DELAY_SECONDS}-second countdown begins before results are revealed.\n\n"
-        "<b>Available game modes:</b>\n"
-        "⭕: Normal mode\n"
-        "🔞: 18+ mode\n\n"
-        "<b>🕹️ How to play:</b>\n"
-        "/next - get a new normal mode question\n"
-        "/nsfw - get a new NSFW (18+ mode) question\n"
-        "Tap 🔵 or 🔴 to vote\n"
-        "and tap <b>Next question</b> to continue in the same mode."
+        "<b>Start a question:</b>\n"
+        f"{mode_lines}\n\n"
+        "<b>How to play:</b>\n"
+        "Tap 🔵 or 🔴 to vote — you can only vote once per question, but you can "
+        "still vote while the countdown is running. Once results are shown, anyone "
+        "can tap <b>Next question</b> to continue in the same mode.\n\n"
+        "If a question is already running and someone tries to start a new one, "
+        "I'll offer a <b>Skip Question</b> button to end it early instead."
     )
     await update.message.reply_html(text)
 
@@ -217,8 +217,9 @@ async def wyr_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await _handle_vote(query, context, chat_id, user, data.split(":", 1)[1])
     elif data == "wyr_next":
         await _handle_next(query, context, chat_id)
-    elif data == "wyr_skip":
-        await _handle_skip(query, context, chat_id)
+    elif data.startswith("wyr_skip"):
+        requested_mode = data.split(":", 1)[1] if ":" in data else None
+        await _handle_skip(query, context, chat_id, requested_mode)
 
 
 async def _handle_vote(query, context: ContextTypes.DEFAULT_TYPE, chat_id: int, user, choice: str):
@@ -259,7 +260,7 @@ async def _handle_next(query, context: ContextTypes.DEFAULT_TYPE, chat_id: int):
     await _post_question(chat_id, state["mode"], context)  # new message for the new question
 
 
-async def _handle_skip(query, context: ContextTypes.DEFAULT_TYPE, chat_id: int):
+async def _handle_skip(query, context: ContextTypes.DEFAULT_TYPE, chat_id: int, requested_mode: str | None = None):
     state = wyr_games.get(chat_id)
     if not state or state["status"] not in ("voting", "counting"):
         await query.answer("No active question to skip.", show_alert=True)
@@ -272,7 +273,7 @@ async def _handle_skip(query, context: ContextTypes.DEFAULT_TYPE, chat_id: int):
             pass
 
     await query.answer("Skipping current question...")
-    mode = state["mode"]
+    mode = requested_mode if requested_mode in WYR_MODES else state["mode"]
 
     await _finalize(chat_id, context)
     await _post_question(chat_id, mode, context)  # new message for the auto-started next question
