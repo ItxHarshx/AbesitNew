@@ -77,7 +77,6 @@ def main():
     app = Application.builder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(CallbackQueryHandler(button_handler))
     app.add_handler(CommandHandler("contacts", contacts))
     app.add_handler(
     MessageHandler(filters.StatusUpdate.NEW_CHAT_MEMBERS, welcome)
@@ -108,6 +107,7 @@ def main():
     app.add_handler(CommandHandler("nsfw", cmd_nsfw))
     app.add_handler(CommandHandler("wouldyourather", cmd_wyr_info))
     app.add_handler(CallbackQueryHandler(wyr_callback, pattern="^wyr_"))   # add this BEFORE button_handler   
+    app.add_handler(CallbackQueryHandler(button_handler))
 
     app.add_handler(
     MessageHandler(filters.TEXT & ~filters.COMMAND, anti_link_filter)
