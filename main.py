@@ -15,7 +15,7 @@ from admin import promote, demote
 from goodbye import member_left
 from deletemsg import delete_message
 from purge import purge
-from start import start, button_hander
+from start import start, button_handler
 #from instagram import download_instagram 
 
 load_dotenv()
