@@ -67,12 +67,12 @@ else:
     )
 
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-query = update.callback_query
-await query.answer()
-mention = update.effective_user.mention_html(
-update.effective_user.first_name
-)
-bot = await context.bot.get_me()
+    query = update.callback_query
+    await query.answer()
+    mention = update.effective_user.mention_html(
+        update.effective_user.first_name
+    )
+    bot = await context.bot.get_me()
 
 if query.data == "sudoers":  
 
