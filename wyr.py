@@ -194,7 +194,7 @@ async def cmd_wyr_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"{REVEAL_DELAY_SECONDS}-second countdown begins before results are revealed.\n\n"
         "<b>Available game modes:</b>\n"
         "⭕: Normal mode\n"
-        "🔞: 18+ mode
+        "🔞: 18+ mode\n\n"
         "<b>🕹️ How to play:</b>\n"
         "/next - get a new normal mode question\n"
         "/nsfw - get a new NSFW (18+ mode) question\n"
