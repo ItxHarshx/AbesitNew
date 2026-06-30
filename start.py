@@ -1,6 +1,7 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 from info import SUDO_USERS
+from html import escape
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -86,7 +87,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
                 sudo_text += (
                     f'• <a href="tg://user?id={user.id}">'
-                    f'{user.first_name}</a>\n'
+                    f'{escape(user.first_name)}</a>\n'
                 )
 
             except Exception:
