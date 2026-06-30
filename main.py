@@ -16,7 +16,8 @@ from purge import purge
 from start import start, button_handler
 from html import escape
 from announce import announce
-#from instagram import download_instagram 
+#from instagram import download_
+from wyr import cmd_next, cmd_nsfw, cmd_wyr_info, wyr_callbackinstagram 
 
 load_dotenv()
 
@@ -103,7 +104,10 @@ def main():
     app.add_handler(CommandHandler("chatid", chatid))
     app.add_handler(CommandHandler("del", delete_message))
     app.add_handler(CommandHandler("purge", purge))
-    
+    app.add_handler(CommandHandler("next", cmd_next))
+    app.add_handler(CommandHandler("nsfw", cmd_nsfw))
+    app.add_handler(CommandHandler("wouldyourather", cmd_wyr_info))
+    app.add_handler(CallbackQueryHandler(wyr_callback, pattern="^wyr_"))   # add this BEFORE button_handler   
 
     app.add_handler(
     MessageHandler(filters.TEXT & ~filters.COMMAND, anti_link_filter)
