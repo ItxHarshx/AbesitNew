@@ -4,10 +4,8 @@ import os
 import asyncio
 from datetime import datetime
 from dotenv import load_dotenv
-from telegram import Update
-from telegram.ext import CallbackQueryHandler
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import MessageHandler, filters, Application, CommandHandler, ChatMemberHandler, ContextTypes
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, update
+from telegram.ext import MessageHandler, filters, Application, CommandHandler, ChatMemberHandler, ContextTypes, CallbackQueryHandler
 from info import SUDO_USERS, GROUP_ID, id, chatid
 from adminlist import adminlist
 from antilink import antilink, anti_link_filter
@@ -16,6 +14,7 @@ from goodbye import member_left
 from deletemsg import delete_message
 from purge import purge
 from start import start, button_handler
+from html import escape
 #from instagram import download_instagram 
 
 load_dotenv()
@@ -372,7 +371,7 @@ async def sudoers(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             text += (
                 f'• <a href="tg://user?id={user_id}">'
-                f'{user.first_name}</a>\n'
+                f'{escape(user.first_name)}</a>\n'
             )
 
         except:
