@@ -3,11 +3,11 @@ from telegram.ext import ContextTypes
 from info import SUDO_USERS
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-mention = update.effective_user.mention_html(
-update.effective_user.first_name
-)
-bot = await context.bot.get_me()
-
+    mention = update.effective_user.mention_html(
+        update.effective_user.first_name
+    )
+    bot = await context.bot.get_me()
+    
 if update.effective_chat.type == "private":  
     text = (  
         f'👋 Hey <b>{mention}</b>!\n\n'  
