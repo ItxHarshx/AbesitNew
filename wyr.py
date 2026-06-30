@@ -29,6 +29,22 @@ REVEAL_DELAY_SECONDS = 15
 # }
 wyr_games: dict[int, dict] = {}
 
+# Per (chat_id, mode) shuffled "deck" of remaining questions for that chat.
+# Pops one question at a time; reshuffles a fresh copy of the full bank once
+# the deck runs empty, so no question repeats until every question in that
+# mode has been shown at least once in that chat.
+wyr_decks: dict[tuple[int, str], list] = {}
+
+
+def _draw_question(chat_id: int, mode: str) -> tuple[str, str]:
+    key = (chat_id, mode)
+    deck = wyr_decks.get(key)
+    if not deck:
+        deck = list(WYR_MODES[mode]["questions"])
+        random.shuffle(deck)
+        wyr_decks[key] = deck
+    return deck.pop()
+
 
 # ---------------------------------------------------------------------------
 # Rendering
@@ -90,7 +106,7 @@ def _render_text(state: dict, result: dict | None = None) -> str:
 # ---------------------------------------------------------------------------
 async def _post_question(chat_id: int, mode: str, context: ContextTypes.DEFAULT_TYPE,
                           edit_message_id: int | None = None):
-    a, b = random.choice(WYR_MODES[mode]["questions"])
+    a, b = _draw_question(chat_id, mode)
     state = {
         "mode": mode,
         "option_a": a,
