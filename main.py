@@ -17,7 +17,7 @@ from start import start, button_handler
 from html import escape
 from announce import announce
 #from instagram import download_
-from wyr import cmd_next, cmd_nsfw, cmd_wyr_info, wyr_callbackinstagram 
+from wyr import cmd_next, cmd_nsfw, cmd_wyr_info, wyr_callback
 
 load_dotenv()
 
