@@ -198,7 +198,7 @@ async def cmd_wyr_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "<b>🕹️ How to play:</b>\n"
         "/next - get a new normal mode question\n"
         "/nsfw - get a new NSFW (18+ mode) question\n"
-        "Tap 🔵 or 🔴 to vote"
+        "Tap 🔵 or 🔴 to vote\n"
         "and tap <b>Next question</b> to continue in the same mode."
     )
     await update.message.reply_html(text)
