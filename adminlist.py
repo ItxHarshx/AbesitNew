@@ -1,5 +1,6 @@
 from telegram import Update
 from telegram.ext import ContextTypes
+from html import escape
 
 async def adminlist(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat = update.effective_chat
@@ -19,7 +20,7 @@ async def adminlist(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user = admin.user
 
         # clickable mention only (NO username)
-        mention = f'<a href="tg://user?id={user.id}">{user.first_name}</a>'
+        mention = f'<a href="tg://user?id={user.id}">{escape(user.first_name)}</a>'
 
         if admin.status == "creator":
             owner = mention
