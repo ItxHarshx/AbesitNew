@@ -64,7 +64,13 @@ async def goodbye(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text=f"👋 {user.mention_html()} left the chat.",
             parse_mode="HTML"
         )
-                    
+
+import logging
+
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO
+)
 
 def main():
     app = Application.builder().token(TOKEN).build()
