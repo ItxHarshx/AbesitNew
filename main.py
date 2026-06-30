@@ -188,7 +188,7 @@ async def unpin(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except:
         pass
 
-async def announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
+'''async def announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
 
     # Sudo check
@@ -230,7 +230,7 @@ async def announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "Announcement posted and pinned."
     )
-
+'''
 
 async def lockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global GROUP_LOCKED
