@@ -256,7 +256,7 @@ async def _handle_next(query, context: ContextTypes.DEFAULT_TYPE, chat_id: int):
         return
 
     await query.answer()
-    await _post_question(chat_id, state["mode"], context, edit_message_id=state["message_id"])
+    await _post_question(chat_id, state["mode"], context)  # new message for the new question
 
 
 async def _handle_skip(query, context: ContextTypes.DEFAULT_TYPE, chat_id: int):
@@ -275,8 +275,7 @@ async def _handle_skip(query, context: ContextTypes.DEFAULT_TYPE, chat_id: int):
     mode = state["mode"]
 
     await _finalize(chat_id, context)
-    new_state = wyr_games[chat_id]
-    await _post_question(chat_id, mode, context, edit_message_id=new_state["message_id"])
+    await _post_question(chat_id, mode, context)  # new message for the auto-started next question
 
     # Clean up the "already a question running" notice this skip button was on.
     try:
