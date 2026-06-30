@@ -61,8 +61,8 @@ def _render_text(state: dict, result: dict | None = None) -> str:
     ]
 
     if result is None:
-        lines.append(f"🔵 {a}")
-        lines.append(f"🔴 {b}")
+        lines.append(f"[🔵] - {a}")
+        lines.append(f"[🔴] - {b}")
         lines.append("")
         if state["votes"]:
             if state["status"] == "counting":
@@ -70,7 +70,7 @@ def _render_text(state: dict, result: dict | None = None) -> str:
             else:
                 lines.append("<i>Waiting for players to answer...</i>")
             voted_names = ", ".join(html.escape(n) for n in state["names"].values())
-            lines.append(f"✅ {voted_names} already answered!")
+            lines.append(f"🗣️: {voted_names} already answered!")
         else:
             lines.append("<i>Waiting for players to answer...</i>")
     else:
@@ -184,22 +184,22 @@ async def cmd_nsfw(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def cmd_wyr_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # The only WYR command allowed to work in DM too.
     mode_lines = "\n".join(
-        f"• /{cfg['command']} — {cfg['label']} questions"
+        f"• /{cfg['command']} — {cfg['label']} mode"
         for cfg in WYR_MODES.values()
     )
     text = (
-        "<b>🤔 Would You Rather</b>\n\n"
+        "<b>[🍂] Would You Rather...?, mini game</b>\n\n"
         "A quick group voting game. Someone starts a question, members vote, "
         f"and once at least {MIN_VOTES_FOR_TIMER} people have voted a "
         f"{REVEAL_DELAY_SECONDS}-second countdown begins before results are revealed.\n\n"
-        "<b>Start a question:</b>\n"
-        f"{mode_lines}\n\n"
-        "<b>How to play:</b>\n"
-        "Tap 🔵 or 🔴 to vote — you can only vote once per question, but you can "
-        "still vote while the countdown is running. Once results are shown, anyone "
-        "can tap <b>Next question</b> to continue in the same mode.\n\n"
-        "If a question is already running and someone tries to start a new one, "
-        "I'll offer a <b>Skip Question</b> button to end it early instead."
+        "<b>Available game modes:</b>\n"
+        "⭕: Normal mode\n"
+        "🔞: 18+ mode
+        "<b>🕹️ How to play:</b>\n"
+        "/next - get a new normal mode question\n"
+        "/nsfw - get a new NSFW (18+ mode) question\n"
+        "Tap 🔵 or 🔴 to vote"
+        "and tap <b>Next question</b> to continue in the same mode."
     )
     await update.message.reply_html(text)
 
