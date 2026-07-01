@@ -111,7 +111,7 @@ def main():
     app.add_handler(CallbackQueryHandler(wyr_callback, pattern="^wyr_"))   # add this BEFORE button_handler
     #tord
     app.add_handler(CommandHandler("truthordare", cmd_truthordare_info))
-    #app.add_handler(CommandHandler("create_tord", cmd_create))
+    app.add_handler(CommandHandler("create_tord", cmd_create))
     #app.add_handler(CommandHandler("join_tord", cmd_join))
     #app.add_handler(CommandHandler("start_tord", cmd_start))
     #app.add_handler(CommandHandler("done", cmd_done))
