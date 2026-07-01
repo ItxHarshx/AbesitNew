@@ -9,14 +9,13 @@ async def atlas(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "A fast-paced word chain game where each player names a place that starts with the last letter of the previous place.\n\n"
 
         "<b>🕹️ How to play:</b>\n"
-        "One player starts by sending the name of any <b>city, state, country, river, mountain, island, or other geographical location</b>.\n"
+        "One player starts by sending the name of any <b>city, state, country, river, or other geographical location</b>.\n"
         "The next player must reply with a place whose <b>first letter matches the last letter</b> of the previous place.\n\n"
 
         "<b>📜 Rules:</b>\n"
         "• No repeated place names.\n"
         "• Spellings must be correct.\n"
-        "• Anyone who can't answer within the agreed time is eliminated.\n\n"
-
+        "• Anyone who can't answer within the agreed time is eliminated.\n"
         "Last player remaining wins! 🏆\n\n"
         "<i>#under_dev</i>"
     )
