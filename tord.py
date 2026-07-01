@@ -80,17 +80,18 @@ def _choice_keyboard() -> InlineKeyboardMarkup:
 # ---------------------------------------------------------------------------
 async def cmd_truthordare_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = (
-        "<b>🎲 Truth or Dare</b>\n\n"
-        "Classic party game — answer a truth or complete a dare, your choice.\n\n"
-        "<b>Commands:</b>\n"
-        "/create_tord — start a new game\n"
-        "/join_tord — join the game\n"
-        "/leave_tord — leave the game\n"
-        "/start_tord — skip the wait, start now (admin/creator)\n"
-        "/close_tord — stop new joins (admin/creator)\n"
-        "/cancel_tord — cancel the game (admin/creator)\n"
-        "/rm_tord — reply to remove a player (admin/creator)\n"
-        "/done — confirm your turn is finished"
+        "<b>[🎭] Truth or Dare..., mini game</b>\n\n"
+        "A simple truth or dare game — answer a truth or complete a dare, your choice.\n\n"
+        "<b>🕹️ Game commands:</b>\n"
+        "- /create_tord: start a new game\n"
+        "- /join_tord: join the game\n"
+        "- /leave_tord: leave the game\n"
+        "- /start_tord: force starts (admin/creator)\n"
+        "- /close_tord: stop new joins (admin/creator)\n"
+        "- /cancel_tord: cancel the game (admin/creator)\n"
+        "- /rm_tord: reply to remove a player (admin/creator)\n"
+        "- /done: confirm your turn is finished\n\n"
+        "<i> #under_dev </i>
     )
     await update.message.reply_html(text)
 
@@ -178,23 +179,20 @@ async def cmd_join(update: Update, context: ContextTypes.DEFAULT_TYPE):
             job_queue = context.application.job_queue
             state["lobby_job"] = job_queue.run_once(_lobby_start_job, LOBBY_START_DELAY, data=chat.id)
             await update.message.reply_html(
-                f"✅ {_mention(user.id, user.first_name)} joined! Minimum players reached.\n\n"
+                f"{_mention(user.id, user.first_name)} joined!\n\n"
                 f"<b>Players ({len(state['players'])}):</b>\n{_player_list_text(state)}\n\n"
-                f"🕹️ Game starts in {LOBBY_START_DELAY}s — or the creator/an admin can "
-                f"/start_tord to begin now."
+                f"🕹️ Game starts in {LOBBY_START_DELAY}s — or /start_tord to begin now."
             )
         else:
             await update.message.reply_html(
-                f"✅ {_mention(user.id, user.first_name)} joined the game!\n\n"
+                f"{_mention(user.id, user.first_name)} joined the game!\n\n"
                 f"<b>Players ({len(state['players'])}):</b>\n{_player_list_text(state)}"
             )
     else:
         # joined mid-game — appended to end of turn order
         await update.message.reply_html(
-            f"✅ {_mention(user.id, user.first_name)} joined mid-game and was added to the turn order!\n\n"
-            f"<b>Current turn order:</b>\n{_player_list_text(state)}"
+            f"{_mention(user.id, user.first_name)} joined!\n\n"
         )
-
 
 async def _lobby_start_job(context: ContextTypes.DEFAULT_TYPE):
     chat_id = context.job.data
@@ -220,7 +218,7 @@ async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if not await _can_manage(update, context, state):
-        await update.message.reply_text("Only the game creator or a group admin in the game can do that.")
+        await update.message.reply_text("Only the game creator or a group admin can do that.")
         return
 
     if len(state["players"]) < MIN_PLAYERS:
@@ -266,7 +264,7 @@ async def _post_turn(chat_id: int, context: ContextTypes.DEFAULT_TYPE):
 
     text = (
         f"🎯 {_mention(current['id'], current['name'])}, choose your fate!\n\n"
-        f"Next player: {_mention(nxt['id'], nxt['name'])}"
+        f"<i>Next player: {_mention(nxt['id'], nxt['name'])}</i>"
     )
     msg = await context.bot.send_message(chat_id, text, parse_mode="HTML", reply_markup=_choice_keyboard())
     state["choice_msg_id"] = msg.message_id
@@ -293,7 +291,7 @@ async def tord_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     label = "Truth 🤔" if choice == "truth" else "Dare 😈"
     await query.edit_message_text(
-        f"✅ {_mention(current['id'], current['name'])} has chosen {label}.", parse_mode="HTML"
+        f"{_mention(current['id'], current['name'])} has chosen {label}.", parse_mode="HTML"
     )
 
     prompt = random.choice(TRUTHS if choice == "truth" else DARES)
@@ -301,7 +299,7 @@ async def tord_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(
         chat_id,
         f"{header} for {_mention(current['id'], current['name'])}:\n\n\"{html.escape(prompt)}\"\n\n"
-        f"(Other players can suggest their own truth/dare here too!)\n"
+        f"<i>(Other players can suggest their own truth/dare here too!)</i>\n"
         f"When done, use /done to move to the next player.",
         parse_mode="HTML",
     )
@@ -416,7 +414,7 @@ async def _remove_player(chat_id: int, context: ContextTypes.DEFAULT_TYPE, idx: 
     if was_current_turn:
         await context.bot.send_message(
             chat_id,
-            f"❕ {_mention(removed['id'], removed['name'])} left mid-turn, skipping to next player.",
+            f"❕ {_mention(removed['id'], removed['name'])} left, skipping to next player.",
             parse_mode="HTML",
         )
         await _post_turn(chat_id, context)
