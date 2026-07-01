@@ -15,7 +15,7 @@ async def atlas(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "<b>📜 Rules:</b>\n"
         "• No repeated place names.\n"
         "• Spellings must be correct.\n"
-        "• Anyone who can't answer within the agreed time is eliminated.\n"
+        "• Answer within the agreed time.\n"
         "Last player remaining wins! 🏆\n\n"
         "<i>#under_dev</i>"
     )
