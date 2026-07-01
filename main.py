@@ -110,15 +110,15 @@ def main():
     app.add_handler(CallbackQueryHandler(wyr_callback, pattern="^wyr_"))   # add this BEFORE button_handler
     #tord
     app.add_handler(CommandHandler("truthordare", cmd_truthordare_info))
-    app.add_handler(CommandHandler("create_tord", cmd_create))
-    app.add_handler(CommandHandler("join_tord", cmd_join))
-    app.add_handler(CommandHandler("start_tord", cmd_start))
-    app.add_handler(CommandHandler("done", cmd_done))
-    app.add_handler(CommandHandler("leave_tord", cmd_leave))
-    app.add_handler(CommandHandler("rm_tord", cmd_rm))
-    app.add_handler(CommandHandler("cancel_tord", cmd_cancel))
-    app.add_handler(CommandHandler("close_tord", cmd_close))
-    app.add_handler(CallbackQueryHandler(tord_callback, pattern="^tord_"))
+    #app.add_handler(CommandHandler("create_tord", cmd_create))
+    #app.add_handler(CommandHandler("join_tord", cmd_join))
+    #app.add_handler(CommandHandler("start_tord", cmd_start))
+    #app.add_handler(CommandHandler("done", cmd_done))
+    #app.add_handler(CommandHandler("leave_tord", cmd_leave))
+    #app.add_handler(CommandHandler("rm_tord", cmd_rm))
+    #app.add_handler(CommandHandler("cancel_tord", cmd_cancel))
+    #app.add_handler(CommandHandler("close_tord", cmd_close))
+    #app.add_handler(CallbackQueryHandler(tord_callback, pattern="^tord_"))
     app.add_handler(CallbackQueryHandler(button_handler))
 
     app.add_handler(
