@@ -6,7 +6,7 @@ from telegram.ext import ContextTypes
 async def atlas(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = (
         "<b>[🌍] Atlas..., mini game</b>\n"
-        "A fast-paced word chain game where each player names a place that starts with the last letter of the previous place.\n\n"
+        "A location-baced word chain game where each player names a place that starts with the last letter of the previous place.\n\n"
 
         "<b>🕹️ How to play:</b>\n"
         "One player starts by sending the name of any <b>city, state, country, river, or other geographical location</b>.\n"
