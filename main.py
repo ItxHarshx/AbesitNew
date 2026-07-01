@@ -18,6 +18,7 @@ from html import escape
 from announce import announce
 #from instagram import download_
 from wyr import cmd_next, cmd_nsfw, cmd_wyr_info, wyr_callback
+from atlas import atlas
 from tord import cmd_truthordare_info, cmd_create, cmd_join, cmd_start, cmd_done, cmd_leave, cmd_rm, cmd_cancel, cmd_close, tord_callback
 
 load_dotenv()
@@ -119,6 +120,7 @@ def main():
     #app.add_handler(CommandHandler("cancel_tord", cmd_cancel))
     #app.add_handler(CommandHandler("close_tord", cmd_close))
     #app.add_handler(CallbackQueryHandler(tord_callback, pattern="^tord_"))
+    app.add_handler(CommandHandler("atlas", atlas))
     app.add_handler(CallbackQueryHandler(button_handler))
 
     app.add_handler(
