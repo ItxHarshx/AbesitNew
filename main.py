@@ -117,7 +117,7 @@ def main():
     #app.add_handler(CommandHandler("done", cmd_done))
     #app.add_handler(CommandHandler("leave_tord", cmd_leave))
     #app.add_handler(CommandHandler("rm_tord", cmd_rm))
-    #app.add_handler(CommandHandler("cancel_tord", cmd_cancel))
+    app.add_handler(CommandHandler("cancel_tord", cmd_cancel))
     #app.add_handler(CommandHandler("close_tord", cmd_close))
     #app.add_handler(CallbackQueryHandler(tord_callback, pattern="^tord_"))
     app.add_handler(CommandHandler("atlas", atlas))
