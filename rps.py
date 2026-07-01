@@ -5,7 +5,7 @@ from telegram.ext import ContextTypes
 
 async def rps(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = (
-        "<b>[✊] Stone Paper Scissors, mini game</b>\n"
+        "<b>[✊] Rock Paper Scissors, mini game</b>\n"
         "A head-to-head game where players secretly choose Stone, Paper, or Scissors. "
         "Reveal your choices together to see who wins the round.\n\n"
 
@@ -18,7 +18,7 @@ async def rps(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "• ✋ Paper beats ✊ Stone.\n"
         "• ✌️ Scissors beats ✋ Paper.\n\n"
 
-        "still figuring out how can i implement this as a multilayer game (3 and more players)\n\n"
+        "<i>still figuring out how can i implement this as a multilayer game (for 3 and more players)</i>\n\n"
         "<i>#under_dev</i>"
     )
 
