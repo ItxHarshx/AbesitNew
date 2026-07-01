@@ -12,6 +12,7 @@ TRUTHS = [
     #"Who in this group would you trust with a secret, and why?",
    # "What's a lie you've told your parents about college?",
    # "What's the weirdest thing you've searched online this month?",
+    "try giving your own truth for now...",
 ]
 
 DARES = [
