@@ -91,7 +91,7 @@ async def cmd_truthordare_info(update: Update, context: ContextTypes.DEFAULT_TYP
         "- /cancel_tord: cancel the game (admin/creator)\n"
         "- /rm_tord: reply to remove a player (admin/creator)\n"
         "- /done: confirm your turn is finished\n\n"
-        "<i> #under_dev </i>
+        "<i> #under_dev </i>"
     )
     await update.message.reply_html(text)
 
