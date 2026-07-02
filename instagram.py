@@ -5,8 +5,6 @@ import yt_dlp
 from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, ContextTypes, filters
 
-BOT_TOKEN = "YOUR_BOT_TOKEN"
-
 URL_PATTERN = re.compile(
     r"(https?://(?:www\.)?(?:instagram\.com/reel[s]?/\S+|youtube\.com/shorts/\S+|youtu\.be/\S+))"
 )
