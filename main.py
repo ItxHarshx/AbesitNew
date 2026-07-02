@@ -16,7 +16,7 @@ from purge import purge
 from start import start, button_handler
 from html import escape
 from announce import announce
-#from instagram import download_
+from instagram import insyt_message
 from wyr import cmd_next, cmd_nsfw, cmd_wyr_info, wyr_callback
 from atlas import atlas
 from tord import cmd_truthordare_info, cmd_create, cmd_join, cmd_start, cmd_done, cmd_leave, cmd_rm, cmd_cancel, cmd_close, tord_callback
@@ -134,6 +134,8 @@ def main():
         enforce_group_lock
     )
     )
+
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     
     print("Bot is running...")
 
