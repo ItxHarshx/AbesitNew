@@ -135,7 +135,7 @@ def main():
     )
     )
 
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, insyt_message))
     
     print("Bot is running...")
 
